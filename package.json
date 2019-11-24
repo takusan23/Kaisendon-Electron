@@ -1,0 +1,23 @@
+{
+  "name": "kaisendon-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/JS/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apatch Licence 2.0",
+  "devDependencies": {
+    "electron": "^7.1.2"
+  },
+  "build": {
+    "productName": "Kaisendon-Electron",
+    "appId": "io.github.takusan23.kaisendonelectron",
+    "win": {
+      "target": "portable",
+      "icon": "./src/img/icon.ico"
+    }
+  }
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kaisendon-Electron</title>
+
+    <link type="text/css" rel="stylesheet" href="css/index.css" />
+
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+</head>
+
+<body>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <div class="menu" id="menu">
+
+        <div class="header">
+            <img id="header_avatar" style="float: left;" width="40px">
+            <p id="header_name" style="margin-left: 40px;"></p>
+        </div>
+
+        <div class="input-field col s12 toot">
+            <textarea id="toot_text" class="materialize-textarea white-text"></textarea>
+            <label for="toot_text" class="white-text">いま何してる？</label>
+            <a class="waves-effect btn-small white-text" id="post"><i class="material-icons left">create</i>投稿</a>
+        </div>
+
+        <div class="bottommenu">
+            <a class="waves-effect btn-flat white-text menubutton" id="account_setting"><i
+                    class="material-icons left">settings</i>アカウント設定</a>
+            <a class="waves-effect btn-flat white-text menubutton" id="timeline_add"><i
+                    class="material-icons left">add</i>タイムライン追加</a>
+        </div>
+
+        <!-- ここに追加したタイムライン入る -->
+        <div id="timeline_button_list" class="scrollbar" style="overflow-y: scroll;">
+
+        </div>
+    </div>
+
+
+
+    <div class="content">
+
+        <!-- ドラッグ可能なバーを置く -->
+        <div class="bar" id="bar">
+            <i class="material-icons cleardrag rightbutton red-text" id="close_button" title="閉じる">close</i>
+            <i class="material-icons cleardrag rightbutton blue-text" id="dev_button" title="F12">developer_mode</i>
+            <div class="switch rightbutton cleardrag">
+                <label onclick="setTheme()">
+                    ダークモード
+                    <input type="checkbox" id="darkmode_switch">
+                    <span class="lever"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- ここタイムライン -->
+        <div class="timeline" id="timeline">
+
+        </div>
+
+        <!-- <script type="text/javascript" src="JS/index.js"></script> -->
+        <script type="text/javascript" src="JS/electron.js"></script>
+
+        <!-- Electron API　使ってない -->
+        <script type="text/javascript" src="JS/load_tl/timeline.js"></script>
+
+</body>
+
+<script>
+
+    //追加したタイムラインを読み込む  
+    window.onload = function () {
+        loadTimelines()
+    }
+
+    function loadTimelines() {
+        var json = localStorage.getItem('timelines')
+        if (json != null) {
+            var timelineList = JSON.parse(json)
+            for (let index = 0; index < timelineList.length; index++) {
+                const json = timelineList[index];
+
+                //HTML追加
+                var timelineItem = document.createElement('a')
+                timelineItem.className = 'waves-effect btn-flat menubutton white-text'
+                //クリック
+                timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)})`)   //timeline.jsへ
+                //中のアイコン
+                var icon = document.createElement('i')
+                icon.className = 'material-icons left'
+                icon.innerHTML = getIcon(json.load)
+                //ボタンにアイコンとタイトル入れる
+                timelineItem.append(icon)
+                timelineItem.innerHTML += json.name
+                //ボタン追加
+                document.getElementById('timeline_button_list').append(timelineItem)
+
+            }
+        }
+    }
+
+
+    function getIcon(load) {
+        var icon = ""
+        switch (load) {
+            case 'home':
+                icon = 'home'
+                break
+            case 'notification':
+                icon = 'notifications'
+                break
+            case 'local':
+                icon = 'train'
+                break
+            case 'public':
+                icon = 'flight'
+                break
+        }
+        return icon
+    }
+
+    //ダークモード処理
+    function setTheme() {
+        var isDarkmode = document.getElementById('darkmode_switch').checked
+        document.getElementById('timeline').innerHTML = ''
+        if (isDarkmode) {
+            document.getElementById('timeline').style.background = '#000000'
+            document.getElementById('bar').style.background = '#000000'
+            document.getElementById('menu').style.background = '#0d47a1'
+        } else {
+            document.getElementById('timeline').style.background = '#ffffff'
+            document.getElementById('bar').style.background = '#ffffff'
+            document.getElementById('menu').style.background = '#0277bd'
+        }
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,94 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+.menubutton {
+    color: #ffffff;
+    width: 100%;
+    vertical-align: middle;
+    padding: 5%;
+    font-size: 20px;
+}
+
+.menu {
+    position: relative;
+    float: left;
+    height: 100%;
+    width: 25%;
+    background: #0277bd;
+    opacity: 0.8;
+}
+
+#timeline_button_list::-webkit-scrollbar {
+    display: none;
+}
+
+.bottommenu {
+    position: absolute;
+    bottom: 0;
+}
+
+.cleardrag {
+    -webkit-app-region: no-drag;
+    /* ドラッグ解除 */
+}
+
+.rightbutton {
+    float: right;
+    cursor: pointer;
+    cursor: hand;
+    margin: 2px;
+}
+
+.bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 75%;
+    height: 5%;
+    -webkit-app-region: drag;
+    background: #ffffff;
+    /* ドラッグ可能に */
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+}
+
+.timeline {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #ffffff;
+    float: left;
+    width: 75%;
+    height: 95%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.space {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.toot {
+    margin: 10px;
+}
+
+.header {
+    position: relative;
+    margin: 10px;
+    font-size: 15px;
+    color: #ffffff;
+}
