@@ -37,9 +37,11 @@
         </div>
 
         <div class="bottommenu">
+            <a class="waves-effect btn-flat white-text menubutton" style="display: none;" onclick="editPanel()" id="timeline_edit"><i
+                    class="material-icons left">edit</i>タイムライン編集</a>
             <a class="waves-effect btn-flat white-text menubutton" id="account_setting"><i
                     class="material-icons left">settings</i>アカウント設定</a>
-            <a class="waves-effect btn-flat white-text menubutton" id="timeline_add"><i
+            <a class="waves-effect btn-flat white-text menubutton" onclick="editPanel()" id="timeline_add"><i
                     class="material-icons left">add</i>タイムライン追加</a>
         </div>
 
@@ -47,6 +49,7 @@
         <div id="timeline_button_list" class="scrollbar" style="overflow-y: scroll;">
 
         </div>
+
     </div>
 
 
@@ -71,11 +74,72 @@
 
         </div>
 
-        <!-- <script type="text/javascript" src="JS/index.js"></script> -->
-        <script type="text/javascript" src="JS/electron.js"></script>
 
-        <!-- Electron API　使ってない -->
-        <script type="text/javascript" src="JS/load_tl/timeline.js"></script>
+        <div class="editpanel" id="editpanel">
+
+            <i class="material-icons cleardrag rightbutton white-text" onclick="closeEditPanel()" id="edit_close_button"
+                title="閉じる">close</i>
+
+            <p class="title">作成・編集画面</p>
+
+            <div class="input-field col s6 space">
+                <input placeholder="名前" id="name" type="text" class="validate white-text">
+                <label for="name" class="white-text">名前</label>
+            </div>
+
+            <div class="space">
+                <label class="white-text">読み込むタイムライン</label>
+                <select id="load" class="browser-default">
+                    <option value="home">ホーム</option>
+                    <option value="notification">通知</option>
+                    <option value="local">ローカル</option>
+                    <option value="public">連合</option>
+                </select>
+            </div>
+
+
+            <div class="space">
+                <label class="white-text">アカウント</label>
+                <select id="account_select" class="browser-default">
+
+                </select>
+            </div>
+
+            <div class="optionspace">
+                <label>
+                    <input type="checkbox" id="streaming" />
+                    <span style="color: white;">ストリーミングAPIを無効にする</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="img" />
+                    <span style="color: white;">アイコンなどの画像を非表示にする</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="gif" />
+                    <span style="color: white;">GIFアニメを無効にする</span>
+                </label>
+            </div>
+
+            <div>
+                <a class="waves-effect waves-light btn blue okbutton" id="add"><i
+                        class="material-icons left">add</i>タイムライン追加</a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- <script type="text/javascript" src="JS/index.js"></script> -->
+    <script type="text/javascript" src="JS/electron.js"></script>
+
+    <!-- Electron API　使ってない -->
+    <script type="text/javascript" src="JS/load_tl/timeline.js"></script>
+
+    <!-- タイムライン追加・編集など -->
+    <script type="text/javascript" src="JS/timeline_add/timeline_add.js"></script>
 
 </body>
 
@@ -97,7 +161,7 @@
                 var timelineItem = document.createElement('a')
                 timelineItem.className = 'waves-effect btn-flat menubutton white-text'
                 //クリック
-                timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)})`)   //timeline.jsへ
+                timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)},${index})`)   //timeline.jsへ
                 //中のアイコン
                 var icon = document.createElement('i')
                 icon.className = 'material-icons left'
@@ -146,6 +210,21 @@
             document.getElementById('menu').style.background = '#0277bd'
         }
     }
+
+    function editPanel() {
+        var editPanel = document.getElementById('editpanel')
+        if (editPanel.style.display == 'block') {
+            editPanel.style.display = 'none';
+        } else {
+            editPanel.style.display = 'block';
+        }
+    }
+
+    function closeEditPanel() {
+        var editPanel = document.getElementById('editpanel')
+        editPanel.style.display = 'none';
+    }
+
 
 </script>
 

@@ -15,9 +15,6 @@ document.getElementById('account_setting').addEventListener('click', () => {
     electron.getGlobal("accountWindow")()
 })
 
-document.getElementById('timeline_add').addEventListener('click', () => {
-    electron.getGlobal("addTimelineWindow")()
-})
 
 function openBrowser(json, instance) {
     require('electron').shell.openExternal(`https://${instance}/web/statuses/${json.id}`)

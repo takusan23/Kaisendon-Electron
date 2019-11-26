@@ -5,14 +5,15 @@ var gif = ""
 var streaming = ""
 var img = ""
 
-function loadTimeline(json) {
-
+function loadTimeline(json,index) {
     token = json.token
     instance = json.instance
     api = json.load
     streaming = json.streaming
     img = json.img
     gif = json.gif
+
+    document.getElementById('timeline_edit').style.display = 'block'
 
     //TLのdiv
     var timelineDiv = document.getElementById('timeline')

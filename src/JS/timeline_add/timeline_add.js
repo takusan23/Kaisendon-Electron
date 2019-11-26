@@ -1,5 +1,8 @@
 //JSおんりー
 
+//追加するタイムラインの名前の配列。
+var nameList = []
+
 document.getElementById('add').onclick = () => {
 
     //TL名前
@@ -30,15 +33,25 @@ document.getElementById('add').onclick = () => {
 
     //LocalStorageから読み込む
     var list = getTimelineList()
-    list.push(item)
+    //すでにある？
+    var pos = nameList.indexOf(name)
+    if (pos != -1) {
+        //新規作成
+        //配列に追加
+        list.push(item)
+    } else {
+        //上書き
+        list[pos] = item
+    }
+
     //LocalStorageに保存
     var json = JSON.stringify(list)
     localStorage.setItem('timelines', json)
 
     //できたらウィンドウ閉じる
-    setTimeout(() => {
-        window.close()
-    }, 1000)
+    var panel = document.getElementById('editpanel')
+    panel.style.display = 'none'
+
 
 }
 
@@ -49,6 +62,7 @@ function getTimelineList() {
         var timelineList = JSON.parse(json)
         for (let index = 0; index < timelineList.length; index++) {
             const item = timelineList[index];
+            nameList.push(item.name)
             list.push(item)
         }
     }

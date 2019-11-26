@@ -92,3 +92,36 @@ body {
     font-size: 15px;
     color: #ffffff;
 }
+
+.editpanel{
+    position: relative;
+    float: right;
+    background: tomato;
+    width: 50%;
+    /* display: none; */
+    height: 100%;
+}
+
+.title {
+    font-size: 20px;
+    color: #ffffff;
+    width: 100%;
+    text-align: center;
+}
+
+.okbutton { 
+    position: relative;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 10%;
+}
+
+.optionspace{
+    margin: 10%;
+    color: white;
+}
+
+.white{
+    color: #ffffff;
+}
