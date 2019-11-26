@@ -37,12 +37,13 @@
         </div>
 
         <div class="bottommenu">
-            <a class="waves-effect btn-flat white-text menubutton" style="display: none;" onclick="editPanel()" id="timeline_edit"><i
-                    class="material-icons left">edit</i>タイムライン編集</a>
+            <a class="waves-effect btn-flat white-text menubutton" style="display: none;" id="timeline_edit"
+                onclick="editPanel()" id="timeline_edit"><i class="material-icons left">edit</i>タイムライン編集</a>
+            <a class="waves-effect btn-flat white-text menubutton" onclick="createTimeline()" id="timeline_add"><i
+                    class="material-icons left">add</i>タイムライン追加</a>
             <a class="waves-effect btn-flat white-text menubutton" id="account_setting"><i
                     class="material-icons left">settings</i>アカウント設定</a>
-            <a class="waves-effect btn-flat white-text menubutton" onclick="editPanel()" id="timeline_add"><i
-                    class="material-icons left">add</i>タイムライン追加</a>
+
         </div>
 
         <!-- ここに追加したタイムライン入る -->
@@ -80,7 +81,7 @@
             <i class="material-icons cleardrag rightbutton white-text" onclick="closeEditPanel()" id="edit_close_button"
                 title="閉じる">close</i>
 
-            <p class="title">作成・編集画面</p>
+            <p class="title" id="edit_title">作成・編集画面</p>
 
             <div class="input-field col s6 space">
                 <input placeholder="名前" id="name" type="text" class="validate white-text">
@@ -123,6 +124,8 @@
             <div>
                 <a class="waves-effect waves-light btn blue okbutton" id="add"><i
                         class="material-icons left">add</i>タイムライン追加</a>
+                <a class="waves-effect waves-light btn red okbutton" style="display: none;" id="delete"><i
+                        class="material-icons left">delete</i>タイムライン削除</a>
             </div>
 
         </div>
@@ -131,6 +134,8 @@
     </div>
 
 
+    <!-- ドラッグで並び替えできるすげーライブラリ -->
+    <script type="text/javascript" src="JS/Sortable.min.js"></script>
 
     <!-- <script type="text/javascript" src="JS/index.js"></script> -->
     <script type="text/javascript" src="JS/electron.js"></script>
@@ -145,57 +150,6 @@
 
 <script>
 
-    //追加したタイムラインを読み込む  
-    window.onload = function () {
-        loadTimelines()
-    }
-
-    function loadTimelines() {
-        var json = localStorage.getItem('timelines')
-        if (json != null) {
-            var timelineList = JSON.parse(json)
-            for (let index = 0; index < timelineList.length; index++) {
-                const json = timelineList[index];
-
-                //HTML追加
-                var timelineItem = document.createElement('a')
-                timelineItem.className = 'waves-effect btn-flat menubutton white-text'
-                //クリック
-                timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)},${index})`)   //timeline.jsへ
-                //中のアイコン
-                var icon = document.createElement('i')
-                icon.className = 'material-icons left'
-                icon.innerHTML = getIcon(json.load)
-                //ボタンにアイコンとタイトル入れる
-                timelineItem.append(icon)
-                timelineItem.innerHTML += json.name
-                //ボタン追加
-                document.getElementById('timeline_button_list').append(timelineItem)
-
-            }
-        }
-    }
-
-
-    function getIcon(load) {
-        var icon = ""
-        switch (load) {
-            case 'home':
-                icon = 'home'
-                break
-            case 'notification':
-                icon = 'notifications'
-                break
-            case 'local':
-                icon = 'train'
-                break
-            case 'public':
-                icon = 'flight'
-                break
-        }
-        return icon
-    }
-
     //ダークモード処理
     function setTheme() {
         var isDarkmode = document.getElementById('darkmode_switch').checked
@@ -209,20 +163,6 @@
             document.getElementById('bar').style.background = '#ffffff'
             document.getElementById('menu').style.background = '#0277bd'
         }
-    }
-
-    function editPanel() {
-        var editPanel = document.getElementById('editpanel')
-        if (editPanel.style.display == 'block') {
-            editPanel.style.display = 'none';
-        } else {
-            editPanel.style.display = 'block';
-        }
-    }
-
-    function closeEditPanel() {
-        var editPanel = document.getElementById('editpanel')
-        editPanel.style.display = 'none';
     }
 
 

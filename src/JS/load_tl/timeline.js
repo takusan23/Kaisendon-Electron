@@ -5,7 +5,10 @@ var gif = ""
 var streaming = ""
 var img = ""
 
-function loadTimeline(json,index) {
+var webSocket
+
+function loadTimeline(json, index) {
+
     token = json.token
     instance = json.instance
     api = json.load
@@ -13,7 +16,14 @@ function loadTimeline(json,index) {
     img = json.img
     gif = json.gif
 
+    //編集画面
+    setEditPanel(json)
+
     document.getElementById('timeline_edit').style.display = 'block'
+
+    if (webSocket != null) {
+        webSocket.close()
+    }
 
     //TLのdiv
     var timelineDiv = document.getElementById('timeline')
@@ -50,14 +60,15 @@ function loadTimeline(json,index) {
 
     //ストリーミングAPI
     if (!streaming) {
-        const socket = new WebSocket(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`);
+        console.log(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`)
+        webSocket = new WebSocket(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`);
 
         // 接続を開く
-        socket.addEventListener('open', function (event) {
+        webSocket.addEventListener('open', function (event) {
         });
 
         // メッセージを待ち受ける
-        socket.addEventListener('message', function (event) {
+        webSocket.addEventListener('message', function (event) {
             var json = JSON.parse(event.data)
             if (json.payload != null) {
                 var item = JSON.parse(json.payload)
@@ -70,6 +81,8 @@ function loadTimeline(json,index) {
     getMyAccount()
 
 }
+
+
 
 function getMyAccount() {
     //API叩く
@@ -87,10 +100,12 @@ function getMyAccount() {
             `
             if (!img) {
                 if (gif) {
-                    document.getElementById('header_avatar').src = data.avatar
-                } else {
                     document.getElementById('header_avatar').src = data.avatar_static
+                } else {
+                    document.getElementById('header_avatar').src = data.avatar
                 }
+            } else {
+                document.getElementById('header_name').style.marginLeft = '0'
             }
         }
     }
@@ -162,7 +177,8 @@ function timelineCard(json, setting) {
     cardDiv.style.padding = '5px'
     cardDiv.style.margin = '2px'
     cardDiv.style.minHeight = '50px'
-    cardDiv.style.paddingLeft = '45px'
+    //画像非表示時はPaddingいらん
+    if (!img) { cardDiv.style.paddingLeft = '45px' }
     cardDiv.style.position = 'relative'
 
     //テキスト
