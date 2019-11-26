@@ -124,7 +124,7 @@ document.getElementById('add').onclick = () => {
 
 //削除ボタン
 //新規作成のときはふさがってる。
-document.getElementById('delete').onclick = function () {
+function timelineDelete(name) {
     //LocalStorageから読み込む
     getTimelineList()
     //すでにある？名前から
@@ -158,6 +158,8 @@ function loadAccount() {
 }
 
 function getTimelineList() {
+    timelineList = []
+    nameList = []
     var json = localStorage.getItem('timelines')
     if (json != null) {
         var list = JSON.parse(json)
@@ -234,8 +236,11 @@ function setEditPanel(json) {
     //オプション
     document.getElementById('streaming').checked = json.streaming
     document.getElementById('gif').checked = json.gif
-    document.getElementById('img').checked = json.checked
+    document.getElementById('img').checked = json.img
     document.getElementById('add').innerHTML = '<i class="material-icons left">save</i>変更を適用</a>'
+    document.getElementById('delete').onclick = function () {
+        timelineDelete(json.name)
+    }
 }
 
 
