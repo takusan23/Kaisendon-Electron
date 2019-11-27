@@ -126,6 +126,20 @@ body {
     color: #ffffff;
 }
 
+.title{
+    font-size: 20px;
+}
+
+.settingpadding{
+    padding-top: 10%;
+}
+
+.settingdiv{    
+    margin: auto;
+    padding-left: 30%;
+    width: 75%;
+}
+
 /* .timelinecard {
     animation: add 3s linear 0s infinite none;
 }

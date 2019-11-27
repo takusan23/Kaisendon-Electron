@@ -53,6 +53,8 @@ function loadTimeline(json, index) {
                 timelineDiv.append(timelineCard(item, json))
 
             }
+        }else{
+            M.toast({html:`取得に失敗しました ${xmlHttp.status}`})
         }
     }
     xmlHttp.send();
@@ -65,6 +67,7 @@ function loadTimeline(json, index) {
 
         // 接続を開く
         webSocket.addEventListener('open', function (event) {
+            M.toast({html:`リアルタイム更新を始めます`})
         });
 
         // メッセージを待ち受ける

@@ -1,5 +1,6 @@
 //ElectronのAPI使ってる
 var electron = require('electron').remote
+const { ipcRenderer } = require('electron')
 
 document.getElementById('close_button').addEventListener('click', () => {
     var browser = electron.getCurrentWindow()
@@ -9,10 +10,6 @@ document.getElementById('close_button').addEventListener('click', () => {
 document.getElementById('dev_button').addEventListener('click', () => {
     var browser = electron.getCurrentWindow()
     browser.webContents.openDevTools()
-})
-
-document.getElementById('account_setting').addEventListener('click', () => {
-    electron.getGlobal("accountWindow")()
 })
 
 

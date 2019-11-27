@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu , nativeTheme } = require('electron')
+const { app, BrowserWindow, Menu, nativeTheme, ipcMain } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -128,3 +128,18 @@ global.accountWindow = function () {
 global.addTimelineWindow = function () {
     createTimelineAddWindow()
 };
+
+
+
+// // In main process.
+// // IPC通信
+// ipcMain.on('ipc', (event, arg) => {
+//     switch (arg) {
+//         case "setting_open":
+//             mainWindow.loadFile('./src/html/settings.html')
+//             break;
+//         case "setting_close":
+//             mainWindow.loadFile('./src/index.html')
+//             break;
+//     }
+// })
