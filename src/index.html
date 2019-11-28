@@ -134,15 +134,22 @@
 
         <!-- 設定パネル -->
         <div class="editpanel" style="background-color: lightgrey;display: none;" id="settingpanel">
-            <div class="menu settingpadding" style="background-color: teal;">
+            <div class="menu" style="background-color: teal;width: 30%;">
 
-                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"><i
-                        class="material-icons left">person_add</i>アカウント追加</a>
+                <p class="title settingpadding">設定</p>
+
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
+                    onclick="setSetting('add')"><i class="material-icons left">person_add</i>アカウント追加</a>
+
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
+                    onclick="setSetting('list')"><i class="material-icons left">list</i>アカウント一覧</a>
 
             </div>
-
+            <!-- 設定のなかみ -->
             <div class="settingpadding">
-                <div id="setting_add_account_div" class="settingdiv">
+                <div id="setting_add_account_div" class="settingdiv" style="display: none;">
+
+                    <h5 class="settingtitle">アカウント追加</h5>
 
                     <div class="input-field col s6">
                         <input placeholder="インスタンス名" id="instance" type="text" class="validate">
@@ -153,6 +160,16 @@
                         <label for="token">アクセストークン</label>
                     </div>
 
+                    <a class="waves-effect waves-light btn blue" id="login_button"><i
+                            class="material-icons left">lock</i>ログイン</a>
+                </div>
+                <div id="setting_account_list_div" class="settingdiv" style="display: none;">
+
+                    <h5 class="settingtitle">アカウント一覧</h5>
+
+                    <ul class="collection with-header" id="setting_account_list">
+
+                    </ul>
                 </div>
             </div>
 
@@ -173,6 +190,9 @@
     <!-- タイムライン追加・編集など -->
     <script type="text/javascript" src="JS/timeline_add/timeline_add.js"></script>
 
+    <!-- 設定画面 -->
+    <script type="text/javascript" src="JS/settings/index.js"></script>
+
 </body>
 
 <script>
@@ -192,13 +212,14 @@
         }
     }
 
-    //設定表示
-    document.getElementById('settings').onclick = () => {
+
+    //Escキーで非表示にできるように
+    document.onkeydown = function (event) {
         var settingPanel = document.getElementById('settingpanel')
-        if (settingPanel.style.display == 'none') {
-            settingPanel.style.display = 'block'
-        } else {
+        var panel = document.getElementById('editpanel')
+        if (event.keyCode == 27) { //27がEscキー
             settingPanel.style.display = 'none'
+            panel.style.display = 'none'
         }
     }
 

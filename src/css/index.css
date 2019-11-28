@@ -137,7 +137,11 @@ body {
 .settingdiv{    
     margin: auto;
     padding-left: 30%;
-    width: 75%;
+    width: 90%;
+}
+
+.settingtitle{
+    margin-bottom: 10%;
 }
 
 /* .timelinecard {

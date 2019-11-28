@@ -1,7 +1,3 @@
-//ElectronAPI
-window.onload = function () {
-    //console.log(JSON.parse(localStorage.getItem('accounts')))
-}
 
 document.getElementById('login_button').onclick = function () {
     //保存
@@ -33,11 +29,6 @@ document.getElementById('login_button').onclick = function () {
             localStorage.setItem('accounts', jsonObject)
 
             M.toast({ html: `保存しました。<br>${display_name}` })
-
-            //閉じる
-            setTimeout(() => {
-                window.close()
-            }, 1000)
         }
     }
     xmlHttp.send();

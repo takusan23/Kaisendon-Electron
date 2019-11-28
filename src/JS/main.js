@@ -37,59 +37,6 @@ function createWindow() {
     })
 }
 
-function createSettingWindow() {
-    // Create the browser window.
-    accountWindow = new BrowserWindow({
-        width: 900,         //横
-        height: 600,        //縦
-        webPreferences: {
-            nodeIntegration: true   //これ書く。
-        }
-    })
-
-    // and load the index.html of the app.
-    accountWindow.loadFile('./src/html/account_settings.html')
-    //メニューバー削除
-    Menu.setApplicationMenu(null)
-
-    // Open the DevTools.
-    //accountWindow.webContents.openDevTools()
-
-    // Emitted when the window is closed.
-    accountWindow.on('closed', function () {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        accountWindow = null
-    })
-}
-
-function createTimelineAddWindow() {
-    // Create the browser window.
-    addTimelineWindow = new BrowserWindow({
-        width: 900,         //横
-        height: 600,        //縦
-        frame: false,       //フレームなくす
-        webPreferences: {
-            nodeIntegration: true   //これ書く。
-        }
-    })
-    // and load the index.html of the app.
-    addTimelineWindow.loadFile('./src/html/timeline_add.html')
-    //メニューバー削除
-    Menu.setApplicationMenu(null)
-
-    // Open the DevTools.
-    //addTimelineWindow.webContents.openDevTools()
-
-    // Emitted when the window is closed.
-    addTimelineWindow.on('closed', function () {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        addTimelineWindow = null
-    })
-}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -117,18 +64,6 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-
-//アカウント設定画面開く
-global.accountWindow = function () {
-    createSettingWindow()
-};
-
-//タイムライン追加画面出す
-global.addTimelineWindow = function () {
-    createTimelineAddWindow()
-};
-
 
 
 // // In main process.
