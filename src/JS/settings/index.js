@@ -159,7 +159,9 @@ function loadElectronSetting() {
 //localStorageから値を持ってきてCheckboxへ
 function loadSetting(name) {
     var checkbox = localStorage.getItem(name)
-    document.getElementById(name).checked = checkbox.match('true') ? 'checked' : ''
+    if (checkbox != null) {
+        document.getElementById(name).checked = checkbox.match('true') ? 'checked' : ''
+    }
 }
 
 //名前はidとlocalStorageに使われる
