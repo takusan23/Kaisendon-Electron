@@ -1,6 +1,8 @@
 
 //一覧読み込み
 loadSettingAccount()
+//Electron設定読み込み
+loadElectronSetting()
 
 //設定表示
 document.getElementById('settings').onclick = () => {
@@ -12,14 +14,23 @@ document.getElementById('settings').onclick = () => {
     }
 }
 
+function closeSettingPanel() {
+    var settingPanel = document.getElementById('settingpanel')
+    settingPanel.style.display = 'none'
+}
+
 
 //設定項目切り替え
 function setSetting(content) {
     var add = document.getElementById('setting_add_account_div')
     var list = document.getElementById('setting_account_list_div')
+    var electron = document.getElementById('setting_electron_div')
+    var thisApp = document.getElementById('setting_this_app_div')
 
     add.style.display = 'none'
     list.style.display = 'none'
+    electron.style.display = 'none'
+    thisApp.style.display = 'none'
 
     switch (content) {
         case "add":
@@ -27,6 +38,12 @@ function setSetting(content) {
             break;
         case "list":
             list.style.display = 'block'
+            break;
+        case "electron":
+            electron.style.display = 'block'
+            break;
+        case "this_app":
+            thisApp.style.display = 'block'
             break;
     }
 }
@@ -84,7 +101,7 @@ function getArrayFromJSONArrayLocalStorage(name) {
 
 //アカウント一覧を読み込む
 function loadSettingAccount() {
-     document.getElementById('setting_account_list').innerHTML = ''
+    document.getElementById('setting_account_list').innerHTML = ''
     if (localStorage.getItem('accounts') != null) {
         var accounts = JSON.parse(localStorage.getItem('accounts'))
         for (let index = 0; index < accounts.length; index++) {
@@ -125,4 +142,28 @@ function deleteAccount(index) {
     M.toast({ html: `削除しました` })
     //再生成
     loadSettingAccount()
+}
+
+function loadElectronSetting() {
+
+    //Electron設定のDivからチェックボックスを全部探して入れる
+    var electronSettingDiv = document.getElementById('setting_electron_div')
+    var inputList = electronSettingDiv.getElementsByTagName('input')
+    for (let index = 0; index < inputList.length; index++) {
+        const element = inputList[index];
+        loadSetting(element.id)
+    }
+
+}
+
+//localStorageから値を持ってきてCheckboxへ
+function loadSetting(name) {
+    var checkbox = localStorage.getItem(name)
+    document.getElementById(name).checked = checkbox.match('true') ? 'checked' : ''
+}
+
+//名前はidとlocalStorageに使われる
+function saveSetting(name) {
+    var checkbox = document.getElementById(name).checked
+    localStorage.setItem(name, checkbox)
 }

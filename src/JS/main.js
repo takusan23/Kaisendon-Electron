@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu, nativeTheme, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, nativeTheme, ipcMain, globalShortcut } = require('electron')
+var localShortcut = require("electron-localshortcut");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -46,6 +47,11 @@ app.on('ready', () => {
 
     nativeTheme.themeSource = 'system';
 
+    //ショートカット追加
+    localShortcut.register(mainWindow, 'Ctrl+Shift+I', function () {
+        //開発者モード
+        mainWindow.webContents.openDevTools()
+    });
 
 })
 

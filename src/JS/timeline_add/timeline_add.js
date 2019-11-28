@@ -29,7 +29,7 @@ function loadTimelines() {
             timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)},${index})`)   //timeline.jsへ
             //中のアイコン
             var icon = document.createElement('i')
-            icon.className = 'material-icons left'
+            icon.className = 'material-icons-outlined left'
             icon.innerHTML = getIcon(json.load)
             //ボタンにアイコンとタイトル入れる
             timelineItem.append(icon)

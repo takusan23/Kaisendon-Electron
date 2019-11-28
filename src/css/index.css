@@ -126,22 +126,30 @@ body {
     color: #ffffff;
 }
 
-.title{
+.title {
     font-size: 20px;
 }
 
-.settingpadding{
-    padding-top: 10%;
+.settingpadding {
+    padding-top: 10px;
 }
 
-.settingdiv{    
+.settingdiv {
     margin: auto;
     padding-left: 30%;
     width: 90%;
 }
 
-.settingtitle{
-    margin-bottom: 10%;
+.settingtitle {
+    margin-bottom: 50px;
+}
+
+.settingchecktextcolor {
+    color: black;
+}
+
+.icon-text {
+    vertical-align: -6px;
 }
 
 /* .timelinecard {

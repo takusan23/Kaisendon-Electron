@@ -11,7 +11,7 @@
 
 
     <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
 
@@ -30,19 +30,20 @@
             <p id="header_name" style="margin-left: 40px;"></p>
         </div>
 
-        <div class="input-field col s12 toot">
+        <div class="input-field col s12 toot " style="color: white;">
             <textarea id="toot_text" class="materialize-textarea white-text"></textarea>
             <label for="toot_text" class="white-text">いま何してる？</label>
-            <a class="waves-effect btn-small white-text" id="post"><i class="material-icons left">create</i>投稿</a>
+            <a class="waves-effect btn-small white-text" id="post"><i
+                    class="material-icons-outlined left">create</i>投稿</a>
         </div>
 
         <div class="bottommenu">
             <a class="waves-effect btn-flat white-text menubutton" style="display: none;" id="timeline_edit"
-                onclick="editPanel()" id="timeline_edit"><i class="material-icons left">edit</i>タイムライン編集</a>
+                onclick="editPanel()" id="timeline_edit"><i class="material-icons-outlined left">edit</i>タイムライン編集</a>
             <a class="waves-effect btn-flat white-text menubutton" onclick="createTimeline()" id="timeline_add"><i
-                    class="material-icons left">add</i>タイムライン追加</a>
+                    class="material-icons-outlined left">add</i>タイムライン追加</a>
             <a class="waves-effect btn-flat white-text menubutton" id="settings"><i
-                    class="material-icons left">settings</i>アプリ設定</a>
+                    class="material-icons-outlined left">settings</i>アプリ設定</a>
 
         </div>
 
@@ -59,8 +60,12 @@
 
         <!-- ドラッグ可能なバーを置く -->
         <div class="bar" id="bar">
-            <i class="material-icons cleardrag rightbutton red-text" id="close_button" title="閉じる">close</i>
-            <i class="material-icons cleardrag rightbutton blue-text" id="dev_button" title="F12">developer_mode</i>
+
+
+
+            <i class="material-icons-outlined cleardrag rightbutton red-text" id="close_button" title="閉じる">close</i>
+            <i class="material-icons-outlined cleardrag rightbutton blue-text" id="dev_button"
+                title="F12">developer_mode</i>
             <div class="switch rightbutton cleardrag">
                 <label onclick="setTheme()">
                     ダークモード
@@ -68,6 +73,9 @@
                     <span class="lever"></span>
                 </label>
             </div>
+
+
+
         </div>
 
         <!-- ここタイムライン -->
@@ -78,8 +86,8 @@
 
         <div class="editpanel" id="editpanel">
 
-            <i class="material-icons cleardrag rightbutton white-text" onclick="closeEditPanel()" id="edit_close_button"
-                title="閉じる">close</i>
+            <i class="material-icons-outlined cleardrag rightbutton white-text" onclick="closeEditPanel()"
+                id="edit_close_button" title="閉じる">close</i>
 
             <p class="title" id="edit_title">作成・編集画面</p>
 
@@ -125,9 +133,9 @@
 
             <div>
                 <a class="waves-effect waves-light btn blue okbutton" id="add"><i
-                        class="material-icons left">add</i>タイムライン追加</a>
+                        class="material-icons-outlined left">add</i>タイムライン追加</a>
                 <a class="waves-effect waves-light btn red okbutton" style="display: none;" id="delete"><i
-                        class="material-icons left">delete</i>タイムライン削除</a>
+                        class="material-icons-outlined left">delete</i>タイムライン削除</a>
             </div>
 
         </div>
@@ -136,17 +144,29 @@
         <div class="editpanel" style="background-color: lightgrey;display: none;" id="settingpanel">
             <div class="menu" style="background-color: teal;width: 30%;">
 
+
+
                 <p class="title settingpadding">設定</p>
 
                 <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="setSetting('add')"><i class="material-icons left">person_add</i>アカウント追加</a>
+                    onclick="closeSettingPanel()"><i class="material-icons-outlined left">arrow_back</i>戻る</a>
 
                 <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="setSetting('list')"><i class="material-icons left">list</i>アカウント一覧</a>
+                    onclick="setSetting('add')"><i class="material-icons-outlined left">person_add</i>アカウント追加</a>
+
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
+                    onclick="setSetting('list')"><i class="material-icons-outlined left">list</i>アカウント一覧</a>
+
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
+                    onclick="setSetting('electron')"><i class="material-icons-outlined left">code</i>Electron</a>
+
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
+                    onclick="setSetting('this_app')"><i class="material-icons-outlined left">info</i>このアプリについて</a>
 
             </div>
             <!-- 設定のなかみ -->
             <div class="settingpadding">
+
                 <div id="setting_add_account_div" class="settingdiv" style="display: none;">
 
                     <h5 class="settingtitle">アカウント追加</h5>
@@ -171,6 +191,25 @@
 
                     </ul>
                 </div>
+                <div id="setting_electron_div" class="settingdiv" style="display: none;">
+
+                    <h5 class="settingtitle">Electron版の設定</h5>
+
+                    <label onclick="saveSetting('setting_electron_dev')">
+                        <input type="checkbox" id="setting_electron_dev" />
+                        <span class="settingchecktextcolor">デベロッパーツールボタンを置かない（Shift + Ctrl + i で代替可能）</span>
+                    </label>
+                    <label onclick="saveSetting('setting_pc_info')">
+                        <input type="checkbox" id="setting_pc_info" />
+                        <span class="settingchecktextcolor">上のタイトルバーにCPU使用率・メモリ使用率・電池残量等を表示する（試験的）</span>
+                    </label>
+                </div>
+                <div id="setting_this_app_div" class="settingdiv" style="display: none;">
+                    <h5 class="settingtitle">このアプリについて</h5>
+                    <img style="width: 100px;" src="img/icon.png">
+                    <p>かいせんどん Electron</p>
+                    <p>1.0.0</p>
+                </div>
             </div>
 
         </div>
@@ -184,7 +223,7 @@
     <!-- <script type="text/javascript" src="JS/index.js"></script> -->
     <script type="text/javascript" src="JS/electron.js"></script>
 
-    <!-- Electron API　使ってない -->
+    <!-- タイムライン読み込み -->
     <script type="text/javascript" src="JS/load_tl/timeline.js"></script>
 
     <!-- タイムライン追加・編集など -->
@@ -200,18 +239,40 @@
     //ダークモード処理
     function setTheme() {
         var isDarkmode = document.getElementById('darkmode_switch').checked
-        document.getElementById('timeline').innerHTML = ''
         if (isDarkmode) {
             document.getElementById('timeline').style.background = '#000000'
             document.getElementById('bar').style.background = '#000000'
             document.getElementById('menu').style.background = '#0d47a1'
+            //タイムラインのCardの色
+            var timelineItems = document.getElementsByClassName('card-panel')
+            for (let index = 0; index < timelineItems.length; index++) {
+                const element = timelineItems[index];
+                element.className = 'card-panel blue darken-4'
+            }
+            //タイトルバーのPC情報たちも色変える
+            var pcInfoItems = document.getElementById('bar').getElementsByTagName('span')
+            for (let index = 0; index < pcInfoItems.length; index++) {
+                const element = pcInfoItems[index];
+                element.style.color = 'white'
+            }
         } else {
             document.getElementById('timeline').style.background = '#ffffff'
             document.getElementById('bar').style.background = '#ffffff'
             document.getElementById('menu').style.background = '#0277bd'
+            //タイムラインのCardの色
+            var timelineItems = document.getElementsByClassName('card-panel')
+            for (let index = 0; index < timelineItems.length; index++) {
+                const element = timelineItems[index];
+                element.className = 'card-panel blue lighten-1'
+            }
+             //タイトルバーのPC情報たちも色変える
+            var pcInfoItems = document.getElementById('bar').getElementsByTagName('span')
+            for (let index = 0; index < pcInfoItems.length; index++) {
+                const element = pcInfoItems[index];
+                element.style.color = 'black'
+            }
         }
     }
-
 
     //Escキーで非表示にできるように
     document.onkeydown = function (event) {
