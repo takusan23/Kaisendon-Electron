@@ -2,14 +2,6 @@
 var electron = require('electron').remote
 const { ipcRenderer } = require('electron')
 
-//CPU/RAM
-var osu = require('node-os-utils')
-var cpu = osu.cpu
-var mem = osu.mem
-
-//Battery
-const batteryLevel = require('battery-level');
-
 document.getElementById('close_button').addEventListener('click', () => {
     var browser = electron.getCurrentWindow()
     browser.close()
@@ -35,6 +27,13 @@ if (JSON.parse(showDevIcon)) {
 var showTitlePCInfo = localStorage.getItem('setting_pc_info')
 var isDarkmode = document.getElementById('darkmode_switch').checked
 if (JSON.parse(showTitlePCInfo)) {
+    //CPU/RAM
+    var osu = require('node-os-utils')
+    var cpu = osu.cpu
+    var mem = osu.mem
+
+    //Battery
+    const batteryLevel = require('battery-level');
 
     var cpuIcon = document.createElement('i')
     cpuIcon.className = 'material-icons-outlined cleardrag blue-text icon-text'

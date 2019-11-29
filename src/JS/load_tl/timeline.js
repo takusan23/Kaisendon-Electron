@@ -53,8 +53,8 @@ function loadTimeline(json, index) {
                 timelineDiv.append(timelineCard(item, json))
 
             }
-        }else{
-            M.toast({html:`取得に失敗しました ${xmlHttp.status}`})
+        } else {
+            M.toast({ html: `取得に失敗しました ${xmlHttp.status}` })
         }
     }
     xmlHttp.send();
@@ -67,7 +67,7 @@ function loadTimeline(json, index) {
 
         // 接続を開く
         webSocket.addEventListener('open', function (event) {
-            M.toast({html:`リアルタイム更新を始めます`})
+            M.toast({ html: `リアルタイム更新を始めます` })
         });
 
         // メッセージを待ち受ける
@@ -314,4 +314,42 @@ document.getElementById('post').onclick = function () {
     xmlHttp.send("status=" + encodeURIComponent(toot_text));
 
     document.getElementById('toot_text').value = ""
+}
+
+function initMultiColumn() {
+    var multi_column = document.getElementById('multi_column_div')
+    multi_column.innerHTML = ''
+
+    //Card作成
+    var parentDiv = document.createElement('div')
+    parentDiv.className = 'col s12 m5 multicolumn_tl'
+    var cardDiv = document.createElement('div')
+    cardDiv.className = 'card-panel teal'
+
+    //Timeline
+    var timelineList = getTimelineList()
+    for (let index = 0; index < timelineList.length; index++) {
+        const json = timelineList[index];
+        var timelineList = getTImelin
+        var span = document.createElement('span')
+        span.innerHTML = json.name
+        parentDiv.append(cardDiv)
+        multi_column.append(parentDiv)
+    }
+}
+
+
+function getTimelineList() {
+    timelineList = []
+    nameList = []
+    var json = localStorage.getItem('timelines')
+    if (json != null) {
+        var list = JSON.parse(json)
+        for (let index = 0; index < list.length; index++) {
+            const item = list[index];
+            nameList.push(item.name)
+            timelineList.push(item)
+        }
+    }
+    return timelineList
 }

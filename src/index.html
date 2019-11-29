@@ -38,8 +38,7 @@
         </div>
 
         <div class="bottommenu">
-            <a class="waves-effect btn-flat white-text menubutton" style="display: none;" id="timeline_edit"
-                onclick="editPanel()" id="timeline_edit"><i class="material-icons-outlined left">edit</i>タイムライン編集</a>
+            <a class="waves-effect btn-flat white-text menubutton" style="display: none;" id="timeline_edit" onclick="editPanel()" id="timeline_edit"><i class="material-icons-outlined left">edit</i>タイムライン編集</a>
             <a class="waves-effect btn-flat white-text menubutton" onclick="createTimeline()" id="timeline_add"><i
                     class="material-icons-outlined left">add</i>タイムライン追加</a>
             <a class="waves-effect btn-flat white-text menubutton" id="settings"><i
@@ -51,6 +50,7 @@
         <div id="timeline_button_list" class="scrollbar" style="overflow-y: scroll;">
 
         </div>
+
 
     </div>
 
@@ -64,8 +64,7 @@
 
 
             <i class="material-icons-outlined cleardrag rightbutton red-text" id="close_button" title="閉じる">close</i>
-            <i class="material-icons-outlined cleardrag rightbutton blue-text" id="dev_button"
-                title="F12">developer_mode</i>
+            <i class="material-icons-outlined cleardrag rightbutton blue-text" id="dev_button" title="F12">developer_mode</i>
             <div class="switch rightbutton cleardrag">
                 <label onclick="setTheme()">
                     ダークモード
@@ -74,6 +73,13 @@
                 </label>
             </div>
 
+            <div class="switch rightbutton cleardrag">
+                <label onclick="setTimelineType()">
+                    マルチカラム
+                    <input type="checkbox" id="multi_column">
+                    <span class="lever"></span>
+                </label>
+            </div>
 
 
         </div>
@@ -83,11 +89,34 @@
 
         </div>
 
+        <div id="multi_column_div" class="multicolumn" style="display: none;">
+
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+            <div class="multicolumn_tl">
+                <h3>タイトル</h3>
+            </div>
+        </div>
 
         <div class="editpanel" id="editpanel">
 
-            <i class="material-icons-outlined cleardrag rightbutton white-text" onclick="closeEditPanel()"
-                id="edit_close_button" title="閉じる">close</i>
+            <i class="material-icons-outlined cleardrag rightbutton white-text" onclick="closeEditPanel()" id="edit_close_button" title="閉じる">close</i>
 
             <p class="title" id="edit_title">作成・編集画面</p>
 
@@ -148,20 +177,15 @@
 
                 <p class="title settingpadding">設定</p>
 
-                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="closeSettingPanel()"><i class="material-icons-outlined left">arrow_back</i>戻る</a>
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account" onclick="closeSettingPanel()"><i class="material-icons-outlined left">arrow_back</i>戻る</a>
 
-                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="setSetting('add')"><i class="material-icons-outlined left">person_add</i>アカウント追加</a>
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account" onclick="setSetting('add')"><i class="material-icons-outlined left">person_add</i>アカウント追加</a>
 
-                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="setSetting('list')"><i class="material-icons-outlined left">list</i>アカウント一覧</a>
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account" onclick="setSetting('list')"><i class="material-icons-outlined left">list</i>アカウント一覧</a>
 
-                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="setSetting('electron')"><i class="material-icons-outlined left">code</i>Electron</a>
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account" onclick="setSetting('electron')"><i class="material-icons-outlined left">code</i>Electron</a>
 
-                <a class="waves-effect btn-flat white-text menubutton" id="setting_account"
-                    onclick="setSetting('this_app')"><i class="material-icons-outlined left">info</i>このアプリについて</a>
+                <a class="waves-effect btn-flat white-text menubutton" id="setting_account" onclick="setSetting('this_app')"><i class="material-icons-outlined left">info</i>このアプリについて</a>
 
             </div>
             <!-- 設定のなかみ -->
@@ -235,7 +259,6 @@
 </body>
 
 <script>
-
     //ダークモード処理
     function setTheme() {
         var isDarkmode = document.getElementById('darkmode_switch').checked
@@ -243,7 +266,7 @@
             document.getElementById('timeline').style.background = '#000000'
             document.getElementById('bar').style.background = '#000000'
             document.getElementById('menu').style.background = '#0d47a1'
-            //タイムラインのCardの色
+                //タイムラインのCardの色
             var timelineItems = document.getElementsByClassName('card-panel')
             for (let index = 0; index < timelineItems.length; index++) {
                 const element = timelineItems[index];
@@ -259,13 +282,13 @@
             document.getElementById('timeline').style.background = '#ffffff'
             document.getElementById('bar').style.background = '#ffffff'
             document.getElementById('menu').style.background = '#0277bd'
-            //タイムラインのCardの色
+                //タイムラインのCardの色
             var timelineItems = document.getElementsByClassName('card-panel')
             for (let index = 0; index < timelineItems.length; index++) {
                 const element = timelineItems[index];
                 element.className = 'card-panel blue lighten-1'
             }
-             //タイトルバーのPC情報たちも色変える
+            //タイトルバーのPC情報たちも色変える
             var pcInfoItems = document.getElementById('bar').getElementsByTagName('span')
             for (let index = 0; index < pcInfoItems.length; index++) {
                 const element = pcInfoItems[index];
@@ -275,7 +298,7 @@
     }
 
     //Escキーで非表示にできるように
-    document.onkeydown = function (event) {
+    document.onkeydown = function(event) {
         var settingPanel = document.getElementById('settingpanel')
         var panel = document.getElementById('editpanel')
         if (event.keyCode == 27) { //27がEscキー
@@ -284,6 +307,20 @@
         }
     }
 
+    //マルチカラムか単一？
+    function setTimelineType() {
+        var isMultiColumn = document.getElementById('multi_column').checked
+        var timeline = document.getElementById('timeline')
+        var multi_column = document.getElementById('multi_column_div')
+        if (isMultiColumn) {
+            timeline.style.display = 'none'
+            multi_column.style.display = 'block'
+            initMultiColumn()
+        } else {
+            timeline.style.display = 'block'
+            multi_column.style.display = 'none'
+        }
+    }
 </script>
 
 </html>

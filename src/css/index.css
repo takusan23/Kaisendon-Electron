@@ -152,6 +152,29 @@ body {
     vertical-align: -6px;
 }
 
+
+/* マルチカラム */
+
+.multicolumn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #ffffff;
+    float: left;
+    width: 75%;
+    height: 95%;
+    white-space: nowrap;
+    overflow: scroll;
+}
+
+.multicolumn_tl {
+    display: inline-block;
+    margin-right: 1%;
+    vertical-align: top;
+    white-space: normal;
+}
+
+
 /* .timelinecard {
     animation: add 3s linear 0s infinite none;
 }
