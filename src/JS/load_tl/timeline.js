@@ -81,16 +81,90 @@ function loadTimeline(json, index) {
     }
 
     //自分のでーた
-    getMyAccount()
+    getMyAccount(json)
+
+}
+
+function loadMultiColumnTimeline(json, name) {
+
+    var token = json.token
+    var instance = json.instance
+    var api = json.load
+    var streaming = json.streaming
+    var img = json.img
+    var gif = json.gif
+
+    if (webSocket != null) {
+        //webSocket.close()
+    }
+
+    //TLのdiv
+    var timelineDiv = document.getElementById(name)
+
+    //TLくるくる
+    timelineDiv.innerHTML = ''
+    var div = document.createElement('div')
+    div.className = 'progress'
+    div.style.width = '50%'
+    div.style.margin = '0 auto'
+    var progress = document.createElement('div')
+    progress.className = 'indeterminate'
+    div.append(progress)
+    timelineDiv.append(div)
+
+    //API叩く
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", `https://${instance}${getURL(api)}&access_token=${token}`);
+    xmlHttp.onload = function () {
+        if (this.status == 200) {
+            timelineDiv.innerHTML = ''
+            //中に入れるやつ
+            var data = JSON.parse(this.responseText)
+            for (let index = 0; index < data.length; index++) {
+
+                const item = data[index];
+                timelineDiv.append(timelineCard(item, json))
+
+            }
+        } else {
+            M.toast({ html: `取得に失敗しました ${xmlHttp.status}` })
+        }
+    }
+    xmlHttp.send();
+
+    //ストリーミングAPI
+    if (!streaming) {
+        console.log(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`)
+        var webSocket = new WebSocket(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`);
+
+        // 接続を開く
+        webSocket.addEventListener('open', function (event) {
+            M.toast({ html: `リアルタイム更新を始めます` })
+        });
+
+        // メッセージを待ち受ける
+        webSocket.addEventListener('message', function (event) {
+            var json = JSON.parse(event.data)
+            console.log(JSON.parse(event.data))
+            if (json.payload != null) {
+                var item = JSON.parse(json.payload)
+                timelineDiv.prepend(timelineCard(item, json))
+            }
+        });
+
+    }
+
+    //自分のでーた
+    getMyAccount(json)
 
 }
 
 
 
-function getMyAccount() {
+function getMyAccount(json) {
     //API叩く
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", `https://${instance}/api/v1/accounts/verify_credentials?access_token=${token}`);
+    xmlHttp.open("GET", `https://${json.instance}/api/v1/accounts/verify_credentials?access_token=${json.token}`);
     xmlHttp.onload = function () {
         if (this.status == 200) {
             //中に入れるやつ
@@ -256,10 +330,10 @@ function timelineCard(json, setting) {
     return parentDiv
 }
 
-function favToot(id) {
+function favToot(json, id) {
     //API叩く
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", `https://${instance}/api/v1/statuses/${id}/favourite?access_token=${token}`);
+    xmlHttp.open("POST", `https://${json.instance}/api/v1/statuses/${id}/favourite?access_token=${json.token}`);
     xmlHttp.onload = function () {
         if (this.status == 200) {
             M.toast({ html: `ふぁぼりました` })
@@ -268,10 +342,10 @@ function favToot(id) {
     xmlHttp.send();
 }
 
-function btToot(id) {
+function btToot(json, id) {
     //API叩く
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", `https://${instance}/api/v1/statuses/${id}/reblog?access_token=${token}`);
+    xmlHttp.open("POST", `https://${json.instance}/api/v1/statuses/${id}/reblog?access_token=${json.token}`);
     xmlHttp.onload = function () {
         if (this.status == 200) {
             M.toast({ html: `ブーストしました` })
@@ -327,19 +401,26 @@ function initMultiColumn() {
         //Card作成
         var parentDiv = document.createElement('div')
         parentDiv.className = 'col s12 m5 multicolumn_card'
+        parentDiv.style.height = '100%'
         var cardDiv = document.createElement('div')
-        cardDiv.className = 'card-panel grey'
+        cardDiv.className = 'card-panel white'
         cardDiv.style.padding = '5px'
+        cardDiv.style.height = '96%'
         //TL
         var timelineDiv = document.createElement('div')
         timelineDiv.className = 'multicolumn_timeline'
-        
+        timelineDiv.style.width = '100%'
+        timelineDiv.id = json.name
+
         var span = document.createElement('span')
+        span.style.color = 'black'
         span.innerHTML = json.name
         cardDiv.append(span)
         cardDiv.append(timelineDiv)
         parentDiv.append(cardDiv)
         multi_column.append(parentDiv)
+
+        loadMultiColumnTimeline(json, json.name)
     }
 }
 
