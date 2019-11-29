@@ -152,7 +152,6 @@ body {
     vertical-align: -6px;
 }
 
-
 /* マルチカラム */
 
 .multicolumn {
@@ -167,13 +166,22 @@ body {
     overflow: scroll;
 }
 
-.multicolumn_tl {
+.multicolumn_card {
     display: inline-block;
     margin-right: 1%;
+    width: 25%;
     vertical-align: top;
     white-space: normal;
 }
 
+.multicolumn_timeline {
+    background: #ffffff;
+    float: left;
+    width: 75%;
+    height: 95%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 
 /* .timelinecard {
     animation: add 3s linear 0s infinite none;

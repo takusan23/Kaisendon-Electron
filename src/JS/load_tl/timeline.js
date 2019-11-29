@@ -320,27 +320,43 @@ function initMultiColumn() {
     var multi_column = document.getElementById('multi_column_div')
     multi_column.innerHTML = ''
 
-    //Card作成
-    var parentDiv = document.createElement('div')
-    parentDiv.className = 'col s12 m5 multicolumn_tl'
-    var cardDiv = document.createElement('div')
-    cardDiv.className = 'card-panel teal'
-
     //Timeline
-    var timelineList = getTimelineList()
+    var timelineList = loadTimelineList()
     for (let index = 0; index < timelineList.length; index++) {
         const json = timelineList[index];
-        var timelineList = getTImelin
+        //Card作成
+        var parentDiv = document.createElement('div')
+        parentDiv.className = 'col s12 m5 multicolumn_card'
+        var cardDiv = document.createElement('div')
+        cardDiv.className = 'card-panel grey'
+        cardDiv.style.padding = '5px'
+        //TL
+        var timelineDiv = document.createElement('div')
+        timelineDiv.className = 'multicolumn_timeline'
+        
         var span = document.createElement('span')
         span.innerHTML = json.name
+        cardDiv.append(span)
+        cardDiv.append(timelineDiv)
         parentDiv.append(cardDiv)
         multi_column.append(parentDiv)
     }
 }
 
-
-function getTimelineList() {
+function loadTimelineList() {
     timelineList = []
+    var json = localStorage.getItem('timelines')
+    if (json != null) {
+        var list = JSON.parse(json)
+        for (let index = 0; index < list.length; index++) {
+            const item = list[index];
+            timelineList.push(item)
+        }
+    }
+    return timelineList
+}
+
+function getTimelineNameList() {
     nameList = []
     var json = localStorage.getItem('timelines')
     if (json != null) {
@@ -348,8 +364,7 @@ function getTimelineList() {
         for (let index = 0; index < list.length; index++) {
             const item = list[index];
             nameList.push(item.name)
-            timelineList.push(item)
         }
     }
-    return timelineList
+    return nameList
 }
