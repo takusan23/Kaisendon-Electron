@@ -14,6 +14,11 @@ document.getElementById('settings').onclick = () => {
     }
 }
 
+document.getElementById('timeline_setting_save').onclick = () => {
+    var width = document.getElementById('column_width').value
+    localStorage.setItem('column_width', width)
+}
+
 function closeSettingPanel() {
     var settingPanel = document.getElementById('settingpanel')
     settingPanel.style.display = 'none'
@@ -25,11 +30,13 @@ function setSetting(content) {
     var add = document.getElementById('setting_add_account_div')
     var list = document.getElementById('setting_account_list_div')
     var electron = document.getElementById('setting_electron_div')
+    var timeline = document.getElementById('setting_timeline_div')
     var thisApp = document.getElementById('setting_this_app_div')
 
     add.style.display = 'none'
     list.style.display = 'none'
     electron.style.display = 'none'
+    timeline.style.display = 'none'
     thisApp.style.display = 'none'
 
     switch (content) {
@@ -41,6 +48,9 @@ function setSetting(content) {
             break;
         case "electron":
             electron.style.display = 'block'
+            break;
+        case "timeline":
+            timeline.style.display = 'block'
             break;
         case "this_app":
             thisApp.style.display = 'block'
@@ -151,8 +161,24 @@ function loadElectronSetting() {
     var inputList = electronSettingDiv.getElementsByTagName('input')
     for (let index = 0; index < inputList.length; index++) {
         const element = inputList[index];
-        loadSetting(element.id)
+        if (element.type == 'checkbox') {
+            loadSetting(element.id)
+        } else if (element.type == 'text') {
+            loadTextSetting(element.id)
+        }
     }
+
+    var timelineSettingDiv = document.getElementById('setting_timeline_div')
+    var inputList = timelineSettingDiv.getElementsByTagName('input')
+    for (let index = 0; index < inputList.length; index++) {
+        const element = inputList[index];
+        if (element.type == 'checkbox') {
+            loadSetting(element.id)
+        } else if (element.type == 'text') {
+            loadTextSetting(element.id)
+        }
+    }
+
 
 }
 
@@ -161,6 +187,12 @@ function loadSetting(name) {
     var checkbox = localStorage.getItem(name)
     if (checkbox != null) {
         document.getElementById(name).checked = checkbox.match('true') ? 'checked' : ''
+    }
+}
+function loadTextSetting(name) {
+    var value = localStorage.getItem(name)
+    if (value != null) {
+        document.getElementById(name).value = value
     }
 }
 

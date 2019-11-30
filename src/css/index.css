@@ -163,7 +163,7 @@ body {
     width: 75%;
     height: 95%;
     white-space: nowrap;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 
 .multicolumn_card {

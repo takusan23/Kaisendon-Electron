@@ -21,23 +21,23 @@ function loadTimelines() {
         var timelineList = JSON.parse(json)
         for (let index = 0; index < timelineList.length; index++) {
             const json = timelineList[index];
-
-            //HTML追加
-            var timelineItem = document.createElement('a')
-            timelineItem.className = 'waves-effect btn-flat menubutton white-text'
-            //クリック
-            timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)},${index})`)   //timeline.jsへ
-            //中のアイコン
-            var icon = document.createElement('i')
-            icon.className = 'material-icons-outlined left'
-            icon.innerHTML = getIcon(json.load)
-            //ボタンにアイコンとタイトル入れる
-            timelineItem.append(icon)
-            timelineItem.innerHTML += json.name
-            timelineItem.setAttribute('name', json.name)
-            //ボタン追加
-            document.getElementById('timeline_button_list').append(timelineItem)
-
+            if (json.load != null) {
+                //HTML追加
+                var timelineItem = document.createElement('a')
+                timelineItem.className = 'waves-effect btn-flat menubutton white-text'
+                //クリック
+                timelineItem.setAttribute('onclick', `loadTimeline(${JSON.stringify(json)},${index})`)   //timeline.jsへ
+                //中のアイコン
+                var icon = document.createElement('i')
+                icon.className = 'material-icons-outlined left'
+                icon.innerHTML = getIcon(json.load)
+                //ボタンにアイコンとタイトル入れる
+                timelineItem.append(icon)
+                timelineItem.innerHTML += json.name
+                timelineItem.setAttribute('name', json.name)
+                //ボタン追加
+                document.getElementById('timeline_button_list').append(timelineItem)
+            }
         }
     }
 }

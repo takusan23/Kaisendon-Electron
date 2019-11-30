@@ -72,9 +72,9 @@ function loadTimeline(json, index) {
 
         // メッセージを待ち受ける
         webSocket.addEventListener('message', function (event) {
-            var json = JSON.parse(event.data)
-            if (json.payload != null) {
-                var item = JSON.parse(json.payload)
+            var toot = JSON.parse(event.data)
+            if (toot.payload != null) {
+                var item = JSON.parse(toot.payload)
                 timelineDiv.prepend(timelineCard(item, json))
             }
         });
@@ -134,7 +134,6 @@ function loadMultiColumnTimeline(json, name) {
 
     //ストリーミングAPI
     if (!streaming) {
-        console.log(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`)
         var webSocket = new WebSocket(`wss://${instance}${getWebSocektURL(api)}&access_token=${token}`);
 
         // 接続を開く
@@ -144,10 +143,9 @@ function loadMultiColumnTimeline(json, name) {
 
         // メッセージを待ち受ける
         webSocket.addEventListener('message', function (event) {
-            var json = JSON.parse(event.data)
-            console.log(JSON.parse(event.data))
-            if (json.payload != null) {
-                var item = JSON.parse(json.payload)
+            var toot = JSON.parse(event.data)
+            if (toot.payload != null) {
+                var item = JSON.parse(toot.payload)
                 timelineDiv.prepend(timelineCard(item, json))
             }
         });
@@ -162,31 +160,35 @@ function loadMultiColumnTimeline(json, name) {
 
 
 function getMyAccount(json) {
-    //API叩く
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", `https://${json.instance}/api/v1/accounts/verify_credentials?access_token=${json.token}`);
-    xmlHttp.onload = function () {
-        if (this.status == 200) {
-            //中に入れるやつ
-            var data = JSON.parse(this.responseText)
+    //マルチカラム時は利用しない
+    var isMultiColumn = document.getElementById('multi_column').checked
+    if (!isMultiColumn) {
+        //API叩く
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", `https://${json.instance}/api/v1/accounts/verify_credentials?access_token=${json.token}`);
+        xmlHttp.onload = function () {
+            if (this.status == 200) {
+                //中に入れるやつ
+                var data = JSON.parse(this.responseText)
 
-            document.getElementById('header_name').innerHTML = `
+                document.getElementById('header_name').innerHTML = `
                 ${data.display_name}<br>
                 @${data.acct}<br>
-                @${instance}<br>
+                @${json.instance}<br>
             `
-            if (!img) {
-                if (gif) {
-                    document.getElementById('header_avatar').src = data.avatar_static
+                if (!img) {
+                    if (gif) {
+                        document.getElementById('header_avatar').src = data.avatar_static
+                    } else {
+                        document.getElementById('header_avatar').src = data.avatar
+                    }
                 } else {
-                    document.getElementById('header_avatar').src = data.avatar
+                    document.getElementById('header_name').style.marginLeft = '0'
                 }
-            } else {
-                document.getElementById('header_name').style.marginLeft = '0'
             }
         }
+        xmlHttp.send();
     }
-    xmlHttp.send();
 }
 
 function getWebSocektURL(link) {
@@ -223,18 +225,18 @@ function timelineCard(json, setting) {
         }
         name = json.type + '/' + json.account.display_name + ' / @' + json.account.acct
         if (setting.gif) {
-            avatar = json.account.avatar
-        } else {
             avatar = json.account.avatar_static
+        } else {
+            avatar = json.account.avatar
         }
     } else {
         content = json.content
         id = json.id
         name = json.account.display_name + ' / ' + json.account.acct
         if (setting.gif) {
-            avatar = json.account.avatar
-        } else {
             avatar = json.account.avatar_static
+        } else {
+            avatar = json.account.avatar
         }
     }
 
@@ -255,7 +257,7 @@ function timelineCard(json, setting) {
     cardDiv.style.margin = '2px'
     cardDiv.style.minHeight = '50px'
     //画像非表示時はPaddingいらん
-    if (!img) { cardDiv.style.paddingLeft = '45px' }
+    if (!setting.img) { cardDiv.style.paddingLeft = '45px' }
     cardDiv.style.position = 'relative'
 
     //テキスト
@@ -263,7 +265,7 @@ function timelineCard(json, setting) {
     textDiv.style.padding = '2px'
 
     //アイコン
-    if (!img) {
+    if (!setting.img) {
         var avatarImg = document.createElement('img')
         avatarImg.style.width = '40px'
         avatarImg.style.margin = '2px'
@@ -374,20 +376,41 @@ function getURL(load) {
 }
 
 document.getElementById('post').onclick = function () {
-    //投稿
-    var toot_text = document.getElementById('toot_text').value
-    //API叩く
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", `https://${instance}/api/v1/statuses/?access_token=${token}`);
-    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-    xmlHttp.onload = function () {
-        if (this.status == 200) {
-            M.toast({ html: `投稿しました` })
+    //マルチカラムじとそうでない時
+    var isMultiColumn = document.getElementById('multi_column').checked
+    if (isMultiColumn) {
+        //マルチカラム
+        //インスタンス、アクセストークンをOption要素のValueから持ってくる
+        var accountJSON = JSON.parse(document.getElementById('post_account_list').value)
+        //投稿
+        var toot_text = document.getElementById('toot_text').value
+        //API叩く
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", `https://${accountJSON.instance}/api/v1/statuses/?access_token=${accountJSON.token}`);
+        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        xmlHttp.onload = function () {
+            if (this.status == 200) {
+                M.toast({ html: `投稿しました` })
+            }
         }
+        xmlHttp.send("status=" + encodeURIComponent(toot_text));
+        document.getElementById('toot_text').value = ""
+    } else {
+        //そうじゃない
+        //投稿
+        var toot_text = document.getElementById('toot_text').value
+        //API叩く
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("POST", `https://${instance}/api/v1/statuses/?access_token=${token}`);
+        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        xmlHttp.onload = function () {
+            if (this.status == 200) {
+                M.toast({ html: `投稿しました` })
+            }
+        }
+        xmlHttp.send("status=" + encodeURIComponent(toot_text));
+        document.getElementById('toot_text').value = ""
     }
-    xmlHttp.send("status=" + encodeURIComponent(toot_text));
-
-    document.getElementById('toot_text').value = ""
 }
 
 function initMultiColumn() {
@@ -402,18 +425,22 @@ function initMultiColumn() {
         var parentDiv = document.createElement('div')
         parentDiv.className = 'col s12 m5 multicolumn_card'
         parentDiv.style.height = '100%'
+        if (localStorage.getItem('column_width') != null) { parentDiv.style.width = localStorage.getItem('column_width') }
         var cardDiv = document.createElement('div')
-        cardDiv.className = 'card-panel white'
+        cardDiv.className = 'white multicolumn_div'
         cardDiv.style.padding = '5px'
-        cardDiv.style.height = '96%'
+        cardDiv.style.height = '100%'
         //TL
         var timelineDiv = document.createElement('div')
         timelineDiv.className = 'multicolumn_timeline'
         timelineDiv.style.width = '100%'
+        timelineDiv.style.height = 'calc(100% - 20px)'
         timelineDiv.id = json.name
 
         var span = document.createElement('span')
         span.style.color = 'black'
+        span.style.height = '10px'
+        span.className = 'multicolumn_title'
         span.innerHTML = json.name
         cardDiv.append(span)
         cardDiv.append(timelineDiv)
@@ -448,4 +475,19 @@ function getTimelineNameList() {
         }
     }
     return nameList
+}
+
+//マルチカラム時のアカウント切り替えドロップダウンメニューつくる
+function setAccountDropDownMenu() {
+    var accounts = localStorage.getItem('accounts')
+    if (accounts != null) {
+        var json = JSON.parse(accounts)
+        for (let index = 0; index < json.length; index++) {
+            const element = json[index];
+            var option = document.createElement('option')
+            option.innerHTML = element.name
+            option.value = JSON.stringify(element)
+            document.getElementById('post_account_list').append(option)
+        }
+    }
 }
