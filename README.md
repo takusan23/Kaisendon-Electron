@@ -1,6 +1,6 @@
 # Kaisendon-Electron
 
-Windows用Mastodonクライアント
+Windows用Mastodonクライアント  
 機能が少ない（添付画像見れないとか追加読み込み未対応とかプロフィール未実装とか）
 ![めいん](https://user-images.githubusercontent.com/32033405/69898876-3ef38d80-13a2-11ea-8c31-1269beeeaae5.png)
 
@@ -9,6 +9,7 @@ Windows用Mastodonクライアント
 # ダウンロードめんどくせえええええ！
 GitHub Pagesに置いてきました。お使いのブラウザから利用可能です！  
 ![chrome](https://user-images.githubusercontent.com/32033405/69899008-f63cd400-13a3-11ea-9a2d-c6fd0125fa0b.png)
+
 [リンクはここ](https://takusan23.github.io/Kaisendon-JS/)
 
 ## 特徴とか
